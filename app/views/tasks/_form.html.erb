@@ -9,8 +9,14 @@
     </div>
   <% end %>
   
-  <%= f.label :content, 'タスク' %>
-  <%= f.text_field :content %>
+  <div>
+    <%= f.label :content, 'タスク' %>
+    <%= f.text_field :content %>
+  </div>
+  <div>
+    <%= f.label :status, 'ステータス' %>
+    <%= f.text_field :status %>
+  </div>
   
   <%= f.submit submitWord %>
 <% end %>
