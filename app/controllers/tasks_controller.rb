@@ -1,13 +1,13 @@
 class TasksController < ApplicationController
-  before_action :set_task, only:[:edit, :show, :update, :destroy]
+  before_action :require_user_logged_in, only: [:index, :new, :edit, :show]
+  before_action :set_task, only: [:edit, :show, :update, :destroy]
   
   def index
-    @tasks = Task.order(id: :desc).page(params[:page]).per(10)
+    @tasks = current_user.tasks.order(id: :desc).page(params[:page]).per(10)
   end
   
   def create
-    @task = Task.new(task_params)
-    
+    @task = current_user.tasks.build(task_params)
     if @task.save
       flash[:success] = 'タスクが正常に作成されました'
       redirect_to @task
@@ -39,7 +39,6 @@ class TasksController < ApplicationController
   
   def destroy
     @task.destroy
-    
     flash[:success] = 'タスクが正常に削除されました'
     redirect_to tasks_url
   end
@@ -47,7 +46,7 @@ class TasksController < ApplicationController
   private
   
   def set_task
-    @task = Task.find(params[:id])
+    @task = current_user.tasks.find_by(id: params[:id])
   end
   
   def task_params
